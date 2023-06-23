@@ -113,3 +113,30 @@ xtest,ytest=data(Stest,Ntest)
 print(xtest) 
 print("ok")
 """
+import pywt
+def wpreproceso(wdfs):
+  wpre=[]
+  w = pywt.Wavelet("db10")
+  for i in range(len(wdfs.T)-1):
+    
+    wldfs=list(np.transpose(np.array(wdfs[str(i)])))
+    wav=list(pywt.wavedec(wldfs, w, level=8))
+    x=[]
+    for z in range(len(wav)):
+      for j in wav[z]:
+        x.append(j)
+    wpre.append(np.array(x))
+  return wpre
+def wdata(dataS,dataN):
+  xS=wpreproceso(dataS)
+  xN=wpreproceso(dataN)
+  xData=[]
+  yData=[]
+  
+  for i in range (len(xS)):
+    xData.append(xS[i])
+    xData.append(xN[i])
+    yData.append(1)
+    yData.append(0)
+  
+  return xData, yData
